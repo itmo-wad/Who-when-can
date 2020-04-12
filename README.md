@@ -14,4 +14,4 @@ Simplified cases:
 - A teacher wants to schedule an online exam for the most convenient time for students. Students choose 3-hour time slots during the week.
 
 Application workflow is on the picture below:
-![Workflow](https://raw.githubusercontent.com/itmo-wad/Who_when_can/master/How_i_see_this.png)
+![Workflow](https://raw.githubusercontent.com/itmo-wad/Who_when_can/master/How_i_see_this.jpg)
