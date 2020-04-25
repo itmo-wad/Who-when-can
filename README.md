@@ -15,3 +15,19 @@ Simplified cases:
 
 Application workflow is on the picture below:
 ![Workflow](https://raw.githubusercontent.com/itmo-wad/Who_when_can/master/How_i_see_this.jpg)
+
+TODO list:
+- [x] Assemble team
+- [x] Discuss our project
+- [x] Make github project page
+- [ ] Discuss teammates roles
+- [x] Choose technologies stack
+- [x] Buy VPS
+- [x] Buy domain name :^)
+- [ ] Create draft backend
+- [ ] Create draft frontend
+- [ ] Work hard
+- [ ] Make production version
+- [ ] Release
+- [ ] Make a presentation for WAD course
+- [ ] Enjoy your life
