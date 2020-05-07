@@ -1,29 +1,85 @@
 from flask import Flask, session, request, redirect, url_for, render_template, flash, jsonify, make_response
-from . forms import  SignUpForm, SignInForm, ChangeForm
+from . forms import  AuthForm, MeetingForm
 from main import app
 import hashlib
 import json
-import bcrypt
+#import bcrypt
 import hmac
-import glob, os
+#import glob, os
 import base64
-from werkzeug.utils import secure_filename
+#from werkzeug.utils import secure_filename
 
 from flask_pymongo import PyMongo
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/task5"
 mongo = PyMongo(app)
 
-allowed = ['jpeg', 'jpg', 'gif', 'png', 'apng', 'svg', 'bmp']
+
 key=b'super_secret_k3y_y0u_will_n3v3r_gue$$'
 
 @app.route('/')
 def index():        	
-    if session['user_available']:
-        return redirect(url_for('secret'))
+    try:
+        if session['user_available']:
+            return redirect(url_for('create_step_1')) ## change endpoint to: redirect to the list of the mitings (?)
+    except:
+        pass
+    return redirect(url_for('create_step_1'))
+
+
+@app.route('/create_step_1', methods=['GET', 'POST'])
+def create_step_1():
+    authform = AuthForm(request.form)
+    if request.method == 'POST' and authform.validate_on_submit():
+        #try:
+        session['current_user'] = mongo.db.users.find_one({'username': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
+        print(session['current_user']) ## remove
+        if session['current_user']:
+            pass ## do something
+        else:
+            mongo.db.users.insert_one({'username': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
+        session['user_available'] = True
+        return redirect(url_for('create_step_2'))
+        #except Exception as e:
+        #    flash("Something wrong")
+        #    print(e)
+    return render_template('create_step_1.html', authform=authform)
+
+
+@app.route('/create_step_2', methods=['GET','POST'])
+def create_step_2():
+    if session['user_available'] != True:
+        return redirect(url_for('create_step_1'))
     else:
-        flash('You are not authenticated')
-    return redirect(url_for('signin'))
+        if request.method == 'POST' and MeetingForm.validate_on_submit():
+            try:
+                mongo.db.meetings.insert_one({'name': MeetingForm.meetingname.data, 'info': MeetingForm.info.data, 'creator':session['current_user'], available_dates: MeetingForm.available_dates.data})
+                return "OK"
+            except Exception as e:
+                flash("Something wrong")
+                print(e)
+    return render_template('create_step_2.html', MeetingForm=MeetingForm)
+
+
+@app.route('/create_step_3', methods=['GET','POST']) ##choose availabe dates for admin. mb change to user with auth
+def create_step_3():
+    if !session['user_available']:
+        return redirect(url_for('create_step_1'))
+    else:
+        if request.method == 'POST':
+            try:
+                mongo.db.meetings.update_one({'username': session['current_user']}, {"$set":{'avatar':base64.b64encode(f.read()).decode()}})
+                return redirect(url_for('create_step_3'))
+            except Exception as e:
+                flash("Something wrong")
+                print(e)
+    return render_template('create_step_3.html', MeetingForm=MeetingForm)
+    
+
+    
+    
+    '''
+
 
 
 @app.route('/upload', methods = ['POST'])
@@ -55,77 +111,4 @@ def secret():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     try:
-        if session['user_available']:
-            return redirect(url_for('secret'))
-    except Exception:
-        pass
-    signupform = SignUpForm(request.form)
-    if request.method == 'POST' and signupform.validate_on_submit():
-        try:
-            salt = bcrypt.gensalt()
-            password = bcrypt.hashpw((signupform.password.data).encode('utf-8'), salt)
-            data = {'username': signupform.username.data, 'password': password.decode("utf-8"), 'salt':salt.decode("utf-8"), 'avatar':''}
-            mongo.db.users.insert_one(data)
-        except Exception as e:
-            flash("Something wrong")
-            print(e)
-            return render_template('signup.html', signupform=signupform)
-        return redirect(url_for('signin'))
-    return render_template('signup.html', signupform=signupform)
-
-
-@app.route('/signin', methods=['GET', 'POST'])
-def signin():
-    try: 
-        if session['user_available']:
-            return redirect(url_for('secret'))
-    except Exception:
-        pass
-    signinform = SignInForm(request.form)
-    if request.method == 'POST':
-        if signinform.validate_on_submit():
-            username = signinform.username.data
-            log =  mongo.db.users.find_one({'username':username})
-            if log!=None:
-                if log['password'].encode('utf-8') == bcrypt.hashpw(signinform.password.data.encode('utf-8'), log['salt'].encode('utf-8')):
-                    current_user = log['username']
-                    session['current_user'] = current_user
-                    session['user_available'] = True
-                    return redirect(url_for('secret'))
-                else:
-                    flash('Wrong login or password') 
-            else:
-                flash('Wrong login or password')
-    return render_template('signin.html', signinform=signinform)
-
-@app.route('/change_pass', methods=['GET', 'POST'])
-def change_pass():
-    try: 
-        if session['user_available']:
-            print(1)
-            if request.method == 'POST':
-                changeform = ChangeForm(request.form)
-                print(2)
-                if changeform.validate_on_submit():
-                    try:
-                        print(3)
-                        salt = bcrypt.gensalt()
-                        mongo.db.users.update_one({'username': session['current_user']}, {"$set":{'password': bcrypt.hashpw((changeform.password.data).encode("utf-8"), salt).decode("utf-8"), 'salt':salt.decode("utf-8")}})
-                        flash('Success') 
-                    except Exception as e:
-                        print(e)
-                else:
-                    flash('Wrong something') 
-            return redirect(url_for('secret'))
-    except Exception as e:
-        print(e)
-    return  redirect(url_for('signin'))
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    session['user_available'] = False
-    return redirect(url_for('signin'))
-
-if __name__ == '__main__':
-    app.run()
+        

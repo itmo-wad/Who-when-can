@@ -25,6 +25,8 @@ TODO list:
 - [x] Buy VPS
 - [x] Buy domain name :^)
 - [ ] Create draft backend
+- [x] Accidentally delete all files
+- [x] Restore some of them and write everything again
 - [ ] Create draft frontend
 - [ ] Work hard
 - [ ] Make production version

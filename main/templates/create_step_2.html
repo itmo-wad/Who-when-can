@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cabinet</title>
+    </head>
+<body>
+	<div class="header">
+			<h3>Hello: {{session['current_user']}}<br> <a href="/logout">Log out</a></h3>
+	</div>
+
+  <div class="container">
+	<div class="notifications">
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+		<p>Error: {{ message }}</p>
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
+	</div></div>
+
+	<form class="form-signin" method="POST" onsubmit="submit_first_dates()">
+        <p>meetingname:&nbsp&nbsp&nbsp     
+        {{ signinform.meetingname(placeholder="Meeting name",id="inputMeetingname", class="form-control", required="")}}</p>
+        <p>Password:
+        {{ signinform.password(placeholder="Password",id="inputPassword", class="form-control", required="") }}</p>
+        <p>
+		{{ signinform.available_dates(id="inputPassword", class="form-control") }}</p>	
+        {{ signinform.csrf_token }}
+        {{ signinform.submit(class="btn btn-lg btn-primary btn-block")}}</p>
+        <p>
+		
+	<div class="add_day">
+		Click to add day
+	</div>
+	<div class="date">
+		date
+		<div class="day">
+			<input type="date">
+			<div class="hour">
+				<input type="time">
+			</div>
+			<div class="add_hours">
+				Click to add hours
+			</div>
+		</div>
+	</div>
+	<div class="submit_first_dates">
+		Submit
+	</div>
+	</form>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="../static/js/main.js"></script>
+</body>
+</html>
