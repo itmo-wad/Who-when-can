@@ -1,20 +1,18 @@
 from flask import Flask, session, request, redirect, url_for, render_template, flash, jsonify, make_response
-from . forms import  AuthForm, MeetingForm
+from . forms import  AuthForm, MeetingForm, DaysAndHoursForm
 from main import app
 import hashlib
 import json
-#import bcrypt
 import hmac
-#import glob, os
 import base64
-#from werkzeug.utils import secure_filename
-
 from flask_pymongo import PyMongo
+from bson import ObjectId
+import json2table
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/task5"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/whowhencandb"
 mongo = PyMongo(app)
 
-
+pepper ='*VrLQjDX&ZhmEmQV%3Q<'
 key=b'super_secret_k3y_y0u_will_n3v3r_gue$$'
 
 @app.route('/')
@@ -31,84 +29,64 @@ def index():
 def create_step_1():
     authform = AuthForm(request.form)
     if request.method == 'POST' and authform.validate_on_submit():
-        #try:
-        session['current_user'] = mongo.db.users.find_one({'username': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
-        print(session['current_user']) ## remove
-        if session['current_user']:
-            pass ## do something
-        else:
-            mongo.db.users.insert_one({'username': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
-        session['user_available'] = True
-        return redirect(url_for('create_step_2'))
-        #except Exception as e:
-        #    flash("Something wrong")
-        #    print(e)
+        try:
+            #check if name+username+password already exists 
+            user = mongo.db.users.find_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
+            if user != None:
+                session['current_user_id'] = str(user['_id'])
+                pass ## do something. go to your meeting list for example
+            else:
+                #if not, register him
+                session['current_user_id'] = str(mongo.db.users.insert_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data}).inserted_id)
+            session['user_available'] = True
+            return redirect(url_for('create_step_2'))
+        except Exception as e:
+            flash("Something wrong")
+            print(e)
     return render_template('create_step_1.html', authform=authform)
 
 
-@app.route('/create_step_2', methods=['GET','POST'])
+@app.route('/create_step_2', methods=['GET','POST']) #fill meting name, some info and choose dates
 def create_step_2():
     if session['user_available'] != True:
         return redirect(url_for('create_step_1'))
     else:
-        if request.method == 'POST' and MeetingForm.validate_on_submit():
+        meetingform = MeetingForm(request.form)
+        if request.method == 'POST' and meetingform.validate_on_submit():
             try:
-                mongo.db.meetings.insert_one({'name': MeetingForm.meetingname.data, 'info': MeetingForm.info.data, 'creator':session['current_user'], available_dates: MeetingForm.available_dates.data})
-                return "OK"
-            except Exception as e:
-                flash("Something wrong")
-                print(e)
-    return render_template('create_step_2.html', MeetingForm=MeetingForm)
-
-
-@app.route('/create_step_3', methods=['GET','POST']) ##choose availabe dates for admin. mb change to user with auth
-def create_step_3():
-    if !session['user_available']:
-        return redirect(url_for('create_step_1'))
-    else:
-        if request.method == 'POST':
-            try:
-                mongo.db.meetings.update_one({'username': session['current_user']}, {"$set":{'avatar':base64.b64encode(f.read()).decode()}})
+                #insert creator name, meeting name, some info and choosen dates to the db
+                session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data)}).inserted_id)
                 return redirect(url_for('create_step_3'))
             except Exception as e:
                 flash("Something wrong")
                 print(e)
-    return render_template('create_step_3.html', MeetingForm=MeetingForm)
-    
-
-    
-    
-    '''
+    return render_template('create_step_2.html', meetingform=meetingform)
 
 
-
-@app.route('/upload', methods = ['POST'])
-def upload():
-    if session['user_available']:
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(url_for('secret'))
-            f = request.files['file']
-            if f.filename.split(".")[-1] in allowed:
-                mongo.db.users.update_one({'username': session['current_user']}, {"$set":{'avatar':base64.b64encode(f.read()).decode()}})
-                flash('File uploaded successfully')
-            else:
-                flash('Screw hakers!!11')
-            return redirect(url_for('secret'))
+@app.route('/create_step_3', methods=['GET','POST']) ##choose availabe dates for admin. 
+def create_step_3():
+    if session['user_available'] != True:
+        return redirect(url_for('create_step_1'))
     else:
-        flash('You are not authenticated')
-   
+        daysandhoursform = DaysAndHoursForm(request.form)
+        if request.method == 'POST':
+            try:
+                #insert creator name, meeting name, some info and choosen dates to the db
+                mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users':{'user_id':ObjectId(session['current_user_id']),'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
+                return redirect(url_for('meetings',id=hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()))
+            except Exception as e:
+                flash("Something wrong")
+                print(e)
+        else:
+            #extract dates for this meeting from db and create HTML table from it
+            available_dates_json = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})['available_dates']
+            build_direction = "TOP_TO_BOTTOM"
+            #table_attributes = {"style": "width:100%"}
+            #table = json2table.convert(infoFromJson,build_direction=build_direction,table_attributes=table_attributes))
+            table = json2table.convert(available_dates_json,build_direction=build_direction)
+    return render_template('create_step_3.html', table=table, daysandhoursform=daysandhoursform)
+    
 
-@app.route('/secret', methods=['GET'])
-def secret():
-    if session['user_available']:
-            avatar =  mongo.db.users.find_one({'username':session['current_user']})['avatar']
-            return render_template('secret.html',changeform=ChangeForm(request.form),avatar=avatar)
-    else:
-        flash('You are not authenticated')
-    return redirect(url_for('signin'))
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    try:
-        
+@app.route('/meetings/<id>') # page for redirection after creation
+def meetings(id):
+    return id

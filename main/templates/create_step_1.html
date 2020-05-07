@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create step 2</title>
+    <title>Create step 1</title>
     </head>
 <body>
 	<div class="header">
@@ -19,25 +19,10 @@
 	{% endwith %}
 	</div></div>
 
-	<form class="form-MeetingForm" method="POST" onsubmit="submit_first_dates()">
-        {% for field in meetingform %}
+	<form class="form-AuthForm" method="POST">
+        {% for field in authform %}
             {{field}}
         {% endfor %}
-	<div class="add_day">
-		Click to add day
-	</div>
-	<div class="date">
-		date
-		<div class="day">
-			<input type="date">
-			<div class="hour">
-				<input type="time">
-			</div>
-			<div class="add_hours">
-				Click to add hours
-			</div>
-		</div>
-	</div>
 	</form>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="../static/js/main.js"></script>

@@ -15,3 +15,7 @@ class MeetingForm(Form):
     info = TextField('Purpose of the meeting and other useful information', validators = [DataRequired()])
     available_dates = HiddenField()
     submit = SubmitField('Submit')
+
+class DaysAndHoursForm(Form):
+    selecteddaysandhours = HiddenField()
+    submit = SubmitField('Submit')
