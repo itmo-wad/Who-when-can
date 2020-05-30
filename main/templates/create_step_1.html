@@ -1,30 +1,84 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create step 1</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://kit.fontawesome.com/3988b7fe08.js" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../static/css/grid/col.css">
+	<link rel="stylesheet" href="../static/css/grid/4cols.css">
+	<link rel="stylesheet" href="../static/css/styles.css">
+	<link rel="stylesheet" href="../static/css/queries.css">
+	<title>Create step 1</title>
     </head>
 <body>
 	<div class="header">
-			<h3>Hello: {{session['current_user']}}<br> <a href="/logout">Log out</a></h3>
+		<div class="header__logo--box">
+			<a href="#home"><i class="far fa-calendar-check header__logo"></i></a>
+		</div>	
+		<div class="header__text--box">
+			<h3 class="header__text--primary">
+				<span class="header__text--main">
+					Who-When-Can
+				</span>
+				<br> 
+				<span class="header__text--sub">
+					Online Event scheduler<br>
+				</span>
+			</h3>
+		</div>
+		<div class="header__user">
+			<h3 class="header__user--text">				
+				Hello:<br> {{session['current_user']}}<br> 
+			</h3>
+			<a href="/logout" class="header__user--logout btn btn--white">Log out</a>
+		</div>
+		<div class="header__notifications">
+			<i class="fas fa-bell header__notifications--logo"></i>
+			<div class="header__notifications--text hide">
+				{% with messages = get_flashed_messages() %}
+					{% if messages %}
+						{% for message in messages %}
+							<p>Error: {{ message }}</p>
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+			</div>
+		</div>
+		
 	</div>
+	<div class="auth-form">
+		<i class="fas fa-sign-in-alt auth-form__logo"></i>
+		<h2>
+			Sign in
+		</h2>
+		<form class="form-AuthForm" method="POST">
+			<div class="row">
+				<div class="col span_1_of_4 name">
+					<h4>Enter your name</h4>
+					{{ authform.name(class_="form-name") }}
+				</div>
+				<div class="col span_1_of_4 username">
+					<h4>Enter your username</h4>
+					{{ authform.username(class_="form-username") }}
+				</div>
+				<div class="col span_1_of_4 password">
+					<h4>Enter your password</h4>
+					{{ authform.password(class_="form-password") }}
+				</div>
+				<div class="col span_1_of_4 submit">
+					<h4><br></h4>
+					{{ authform.submit(class_="form-password") }}
+				</div>
+			</div>
+			
+		</form>
 
-  <div class="container">
-	<div class="notifications">
-	{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		{% for message in messages %}
-		<p>Error: {{ message }}</p>
-		{% endfor %}
-	{% endif %}
-	{% endwith %}
-	</div></div>
-
-	<form class="form-AuthForm" method="POST">
-        {% for field in authform %}
-            {{field}}
-        {% endfor %}
-	</form>
+	</div>
+	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="../static/js/main.js"></script>
+	<script src="../static/js/scripts.js"></script>
+
 </body>
 </html>

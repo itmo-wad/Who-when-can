@@ -1,0 +1,135 @@
+@media only screen and (max-width: 1200px){
+    .header__logo{
+        font-size: 280%;
+    }
+    .header__text--box{
+        top:22%;
+    }
+    .header__text--main{
+        font-size: 2.8rem;
+        margin-bottom: 8px;
+    }
+    .header__text--sub{
+        font-size: 1.2rem;
+    }
+    .header__user--text{
+        font-size: 1rem;
+    }
+    .btn,
+    .btn:link,
+    .btn:visited{
+        padding: 12px 34px;
+        font-size: 0.8rem;
+    }    
+    .auth-form__logo{
+        left: 35%;
+        font-size: 220%;
+    }
+}
+
+/* small tablet to big tablet from 768px to 1023px */
+@media only screen and (max-width: 1023px){
+    /* html{
+        font-size: 14px;
+    } */
+    h2, h3{
+        line-height: 120%;
+    }    
+    .header__text--box{
+        top:28%;
+    }
+
+    .header__logo--box{
+        top: 26%;
+    }
+    .header__logo{
+        font-size: 220%;
+    }
+    .header__text--main{
+        font-size: 2.2rem;
+        margin-bottom:0px;
+        letter-spacing: 3px;
+    }
+    .header__text--sub{
+        font-size: 1.2rem;
+        letter-spacing: 4px;
+    }
+    .header__user{
+        margin-top: 1%;
+        left: 73%;
+        top: 20%;
+    }
+    .btn,
+    .btn:link,
+    .btn:visited{
+        padding: 10px 30px;
+    }
+    .header__notifications{
+        left:71%;
+    }       
+    .auth-form__logo{
+        left: 33%;
+        font-size: 220%;
+    }
+}
+
+/* small phones to small tablets */
+@media only screen and (max-width: 767px){
+    html{
+        font-size: 12px;
+    }
+    .header__user{
+        top: 65%;
+        left: 10%;
+        width: 80%;
+    }
+    .header__user--text{
+        display:inline-block;
+        /* margin-left: 25%; */
+    }
+    .btn,
+    .btn:link,
+    .btn:visited{
+        /* margin-left: 20%; */
+        padding: 8px 16px;
+        font-size: 0.7rem;
+    }               
+    .header__notifications{
+        top: 30%;
+    }
+    .header__notifications--logo{  
+        font-size: 300%;
+    }    
+    .header__notifications--text{
+        font-size: 110%;
+    }
+    .auth-form__logo{
+        left: 28%;
+        font-size: 200%;
+    }
+    .col{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 613px){
+    html{
+        font-size: 11px;
+    }
+    .header__text--main{
+        font-size: 1.1rem;
+    }
+    .header__text--sub{
+        font-size: 0.9rem;
+    }
+    .header__user{
+        top: 72%;
+    }
+    .header__user--text{
+        display:inline-block;
+        margin-left: 0;
+    }
+    .header__user--logout{
+        margin-left: 30%;
+    }
+}
