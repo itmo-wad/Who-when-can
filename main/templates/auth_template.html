@@ -1,0 +1,28 @@
+<div class="auth-form">
+    <i class="fas fa-sign-in-alt auth-form__logo"></i>
+    <h2>
+        Sign in
+    </h2>
+    <form class="form-AuthForm" method="POST">
+        <div class="row">
+            <div class="col span_1_of_4 name">
+                <h4>Enter your name</h4>
+                {{ authform.name(class_="form-name") }}
+            </div>
+            <div class="col span_1_of_4 username">
+                <h4>Enter your username</h4>
+                {{ authform.username(class_="form-username") }}
+            </div>
+            <div class="col span_1_of_4 password">
+                <h4>Enter your password</h4>
+                {{ authform.password(class_="form-password") }}
+            </div>
+            <div class="col span_1_of_4 submit">
+                <h4><br></h4>
+                {{ authform.csrf_token }}
+                {{ authform.submit(class_="form-password") }}
+            </div>
+        </div>
+        
+    </form>
+</div>

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+	{% include 'head.html' %}
     <title>Create step 2</title>
     </head>
 <body>
-	<div class="header">
-			<h3>Hello: {{session['current_user']}}<br> <a href="/logout">Log out</a></h3>
-	</div>
+	{% include 'header.html' %}
 
   <div class="container">
 	<div class="notifications">
@@ -39,7 +38,6 @@
 		</div>
 	</div>
 	</form>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="../static/js/main.js"></script>
+	{% include 'footer.html' %}
 </body>
 </html>

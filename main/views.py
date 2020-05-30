@@ -19,15 +19,16 @@ key=b'super_secret_k3y_y0u_will_n3v3r_gue$$'
 def index():        	
     try:
         if session['user_available']:
-            return redirect(url_for('create_step_1')) ## change endpoint to: redirect to the list of the mitings (?)
+            return redirect(url_for('create_step_1')) ## change endpoint to: redirect to the list of the meetings (?)
     except:
         pass
     return redirect(url_for('create_step_1'))
 
+# 
+# function for authentication for client and creator
+#
 
-@app.route('/create_step_1', methods=['GET', 'POST'])
-def create_step_1():
-    authform = AuthForm(request.form)
+def Auth(authform): 
     if request.method == 'POST' and authform.validate_on_submit():
         try:
             #check if name+username+password already exists 
@@ -39,11 +40,24 @@ def create_step_1():
                 #if not, register him
                 session['current_user_id'] = str(mongo.db.users.insert_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data}).inserted_id)
             session['user_available'] = True
-            return redirect(url_for('create_step_2'))
+            return True
         except Exception as e:
             flash("Something wrong")
             print(e)
-    return render_template('create_step_1.html', authform=authform)
+    return False
+
+
+####################################################################
+###########                   creator part            ##############
+####################################################################
+@app.route('/create_step_1', methods=['GET', 'POST'])
+def create_step_1():
+    authform = AuthForm(request.form)
+    if Auth(authform):
+        return redirect(url_for('create_step_2'))
+    else:
+        return render_template('create_step_1.html', authform=authform)
+    
 
 
 @app.route('/create_step_2', methods=['GET','POST']) #fill meting name, some info and choose dates
@@ -72,8 +86,9 @@ def create_step_3():
         if request.method == 'POST':
             try:
                 #insert creator name, meeting name, some info and choosen dates to the db
-                mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users':{'user_id':ObjectId(session['current_user_id']),'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
-                return redirect(url_for('meetings',id=hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()))
+                meeting_id_hash = id=hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()
+                mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'meeting_id_hash':meeting_id_hash, 'users':{'user_id':ObjectId(session['current_user_id']),'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
+                return redirect(url_for('meetings',meeting_id_hash))
             except Exception as e:
                 flash("Something wrong")
                 print(e)
@@ -86,7 +101,42 @@ def create_step_3():
             table = json2table.convert(available_dates_json,build_direction=build_direction)
     return render_template('create_step_3.html', table=table, daysandhoursform=daysandhoursform)
     
+#
+#create page after meeting creation for id copy and instructions
+#
 
-@app.route('/meetings/<id>') # page for redirection after creation
+####################################################################
+###########                    client part            ##############
+####################################################################
+
+@app.route('/meetings/<id>') # page for id validation
 def meetings(id):
-    return id
+    try:
+        #check if meeting ID exists 
+        meeting_id = mongo.db.meetings.find_one({'meeting_id_hash': id})
+        if meeting_id != None:
+            flash("Sorry, there is no meeting you trying to access")
+        else:
+            return redirect(url_for('meeting_login'))
+    except Exception as e:
+            flash("Something wrong")
+            print(e)
+    return render_template('Error.html')        
+
+
+@app.route('/meeting_login', methods=['GET', 'POST']) #authentication page for table filling
+def meeting_login():
+    authform = AuthForm(request.form)
+    if Auth(authform):
+        return redirect(url_for('time_picking'))
+    else:
+        return render_template('meeting_login.html', authform=authform)
+
+
+@app.route('/time_picking', methods=['GET', 'POST'])
+def time_picking():
+    authform = AuthForm(request.form)
+    if Auth(authform):
+        return redirect(url_for('create_step_2'))
+    else:
+        return render_template('create_step_1.html', authform=authform)
