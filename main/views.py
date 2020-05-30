@@ -47,6 +47,26 @@ def Auth(authform):
     return False
 
 
+def table_filling(daysandhoursform):
+    if request.method == 'POST':
+        try:
+            #insert username and his choosen dates to the db
+            mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users.'+session['current_user_id']:{'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
+            return 'Updated'
+        except Exception as e:
+            flash("Something wrong")
+            print(e)
+    else:
+        #extract dates for this meeting from db and create HTML table from it
+        available_dates_json = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})['available_dates']
+        build_direction = "TOP_TO_BOTTOM"
+        #table_attributes = {"style": "width:100%"}
+        #table = json2table.convert(infoFromJson,build_direction=build_direction,table_attributes=table_attributes))
+        table = json2table.convert(available_dates_json,build_direction=build_direction)
+        return table
+    return False
+
+
 ####################################################################
 ###########                   creator part            ##############
 ####################################################################
@@ -69,7 +89,7 @@ def create_step_2():
         if request.method == 'POST' and meetingform.validate_on_submit():
             try:
                 #insert creator name, meeting name, some info and choosen dates to the db
-                session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data)}).inserted_id)
+                session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data),'users':{}}).inserted_id)
                 return redirect(url_for('create_step_3'))
             except Exception as e:
                 flash("Something wrong")
@@ -83,24 +103,14 @@ def create_step_3():
         return redirect(url_for('create_step_1'))
     else:
         daysandhoursform = DaysAndHoursForm(request.form)
-        if request.method == 'POST':
-            try:
-                #insert creator name, meeting name, some info and choosen dates to the db
-                meeting_id_hash = id=hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()
-                mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'meeting_id_hash':meeting_id_hash, 'users':{'user_id':ObjectId(session['current_user_id']),'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
-                return redirect(url_for('meetings',meeting_id_hash))
-            except Exception as e:
-                flash("Something wrong")
-                print(e)
-        else:
-            #extract dates for this meeting from db and create HTML table from it
-            available_dates_json = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})['available_dates']
-            build_direction = "TOP_TO_BOTTOM"
-            #table_attributes = {"style": "width:100%"}
-            #table = json2table.convert(infoFromJson,build_direction=build_direction,table_attributes=table_attributes))
-            table = json2table.convert(available_dates_json,build_direction=build_direction)
-    return render_template('create_step_3.html', table=table, daysandhoursform=daysandhoursform)
-    
+        result = table_filling(daysandhoursform)
+        if result == 'Updated':
+            meeting_id_hash = hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()
+            mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'meeting_id_hash':meeting_id_hash}})
+            return 'meetings'+meeting_id_hash
+        elif result != False:
+            return render_template('create_step_3.html', table=result, daysandhoursform=daysandhoursform)
+    return redirect(url_for('index'))
 #
 #create page after meeting creation for id copy and instructions
 #
@@ -109,19 +119,20 @@ def create_step_3():
 ###########                    client part            ##############
 ####################################################################
 
-@app.route('/meetings/<id>') # page for id validation
+@app.route('/meetings/<id>', methods=['GET']) # page for id validation
 def meetings(id):
     try:
         #check if meeting ID exists 
-        meeting_id = mongo.db.meetings.find_one({'meeting_id_hash': id})
-        if meeting_id != None:
+        meeting_id = str(mongo.db.meetings.find_one({'meeting_id_hash': id})['_id']) 
+        if meeting_id == None:
             flash("Sorry, there is no meeting you trying to access")
         else:
+            session['meeting_id'] = meeting_id
             return redirect(url_for('meeting_login'))
     except Exception as e:
             flash("Something wrong")
             print(e)
-    return render_template('Error.html')        
+    return render_template('error.html')        
 
 
 @app.route('/meeting_login', methods=['GET', 'POST']) #authentication page for table filling
@@ -135,8 +146,18 @@ def meeting_login():
 
 @app.route('/time_picking', methods=['GET', 'POST'])
 def time_picking():
-    authform = AuthForm(request.form)
-    if Auth(authform):
-        return redirect(url_for('create_step_2'))
+    if session['user_available'] != True:
+        return redirect(url_for('meeting_login'))
     else:
-        return render_template('create_step_1.html', authform=authform)
+        daysandhoursform = DaysAndHoursForm(request.form)
+        result = table_filling(daysandhoursform)
+        if result == 'Updated':
+            return redirect(url_for('finish'))
+        elif result != False:
+            return render_template('time_picking.html', table=result, daysandhoursform=daysandhoursform)
+    return redirect(url_for('index'))
+
+
+@app.route('/finish', methods=['GET']) #authentication page for table filling
+def finish():
+    return 'success'
