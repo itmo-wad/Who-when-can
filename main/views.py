@@ -107,10 +107,19 @@ def create_step_3():
         if result == 'Updated':
             meeting_id_hash = hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()
             mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'meeting_id_hash':meeting_id_hash}})
-            return 'meetings'+meeting_id_hash
+            return redirect(url_for('meeting_created',id=meeting_id_hash))
         elif result != False:
             return render_template('create_step_3.html', table=result, daysandhoursform=daysandhoursform)
     return redirect(url_for('index'))
+
+@app.route('/meeting_created/<id>')
+def meeting_created(id):        	
+    try:
+        if session['user_available']:
+            return render_template('meeting_created.html', id=id) ## change endpoint to: redirect to the list of the meetings (?)
+    except:
+        flash("Sorry, there is no meeting you trying to access")
+    return redirect(url_for('create_step_1'))
 #
 #create page after meeting creation for id copy and instructions
 #
@@ -158,6 +167,12 @@ def time_picking():
     return redirect(url_for('index'))
 
 
-@app.route('/finish', methods=['GET']) #authentication page for table filling
+@app.route('/finish')
 def finish():
-    return 'success'
+    try:
+        if session['user_available']:
+            return render_template('success.html') ## change endpoint to: redirect to the list of the meetings (?)
+    except Exception as e:
+            flash("Sorry, there is no meeting you trying to access")
+            print(e) 
+    return render_template('error.html')    
