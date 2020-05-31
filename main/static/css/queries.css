@@ -15,15 +15,18 @@
     .header__user--text{
         font-size: 1rem;
     }
-    .btn,
-    .btn:link,
-    .btn:visited{
+    .btn__big,
+    .btn__big:link,
+    .btn__big:visited{
         padding: 12px 34px;
         font-size: 0.8rem;
     }    
     .auth-form__logo{
         left: 35%;
         font-size: 220%;
+    }
+    .logo{
+        left: 33%;
     }
 }
 
@@ -59,9 +62,9 @@
         left: 73%;
         top: 20%;
     }
-    .btn,
-    .btn:link,
-    .btn:visited{
+    .btn__big,
+    .btn__big:link,
+    .btn__big:visited{
         padding: 10px 30px;
     }
     .header__notifications{
@@ -70,6 +73,19 @@
     .auth-form__logo{
         left: 33%;
         font-size: 220%;
+    }
+    .logo{
+        left: 25%;
+    }
+    #submit{        
+        font-size: 0.7rem;
+        width: 70%;
+    }
+    .add_day{
+        width: 25%;
+    }
+    .add_hours{
+        width: 55%;
     }
 }
 
@@ -82,17 +98,23 @@
         top: 65%;
         left: 10%;
         width: 80%;
+        text-align: none;
+        margin: 0px;
     }
     .header__user--text{
-        display:inline-block;
+        display: block;
+        margin: 0px;
         /* margin-left: 25%; */
     }
-    .btn,
-    .btn:link,
-    .btn:visited{
+    .header__user--logout{
+        right: 1%;
+    }
+    .btn__big,
+    .btn__big:link,
+    .btn__big:visited{
         /* margin-left: 20%; */
         padding: 8px 16px;
-        font-size: 0.7rem;
+        font-size: 1rem;
     }               
     .header__notifications{
         top: 30%;
@@ -107,7 +129,16 @@
         left: 28%;
         font-size: 200%;
     }
+    .row{
+        height: 300px;
+    }
     .col{
+        width: 100%;
+        margin: 0;
+        height: 75px;
+    }
+    #submit{
+        font-size: 1rem;
         width: 100%;
     }
 }

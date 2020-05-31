@@ -6,26 +6,18 @@
     </head>
 <body>
 	{% include 'header.html' %}
-	<form class="form-MeetingForm" method="POST" onsubmit="submit_first_dates()">
-        {% for field in meetingform %}
-            {{field}}
-        {% endfor %}
-	<div class="add_day">
-		Click to add day
-	</div>
-	<div class="date">
-		date
-		<div class="day">
-			<input type="date">
-			<div class="hour">
-				<input type="time">
-			</div>
-			<div class="add_hours">
-				Click to add hours
-			</div>
-		</div>
-	</div>
-	</form>
+
+  	<div class="container">
+		<div class="notifications">
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+			<p>Error: {{ message }}</p>
+			{% endfor %}
+		{% endif %}
+		{% endwith %}
+	</div></div>
+	{% include 'meetingForm_template.html' %}
 	{% include 'footer.html' %}
 </body>
 </html>

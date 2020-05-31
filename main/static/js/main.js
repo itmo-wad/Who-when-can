@@ -1,11 +1,15 @@
 //add day event handler. on button click add new empty day
 $( ".add_day" ).click(function() {
-    $( ".date" ).append( $( "<div class=\"day\"><input type=\"date\"><div class=\"hour\"><input type=\"time\"></div><div class=\"add_hours\">Click to add hours</div></div>" ) );
+    // $( ".date" ).append( $( "<div class=\"day\"><div class=\"col span_1_of_2\"><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date<input type=\"date\" class=\"datepicker\"></div><div class=\"col span_1_of_2\"><div class=\"hour\">Choose your time<input type=\"time\" class=\"timepicker\"></div><div class=\"add_hours btn__small btn__blue\">Click to add more hours</div></div></div>" ) );
+    $( ".date__table" ).append( $("<tr class=\"date\"><td><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date<input type=\"date\" class=\"datepicker\"></td><td><div class=\"hour\">Choose your time<input type=\"time\" class=\"timepicker\"></div><div class=\"add_hours btn__small btn__blue\">Click to add more hours</div></td></tr>"));
+    
+    
   });
 
 //add hour event handler. on button click add new empty hour
 $( "body" ).on( "click", ".add_hours", function() {
-    $(this).before($( "<div class=\"hour\"><input type=\"time\"></div>" ) );
+    $(this).before($( "<div class=\"hour\">Choose your time<input type=\"time\" class=\"timepicker\"></div>" ) );
+    	
   });
 
 

@@ -1,0 +1,51 @@
+<div class="Meetingform">    
+    <i class="far fa-plus-square logo"></i>
+    <h2>
+        Create new meeting
+    </h2>
+    <form class="form-MeetingForm" method="POST" onsubmit="submit_first_dates()">
+        <table class="meetingForm__table">
+            <tr>
+                <td class="meetingname">
+                    <h4>Meeting's name</h4>
+                    {{ meetingform.meetingname(class_="form-meetingname") }}
+                </td>
+                <td class="info">
+                    <h4>Additional information</h4>
+                    {{ meetingform.info(class_="form-info") }}
+                </td>
+                <td class="available_dates">
+                    {{ meetingform.available_dates(class_="form-available_dates") }}
+                </td>
+                <td class="submit">
+                    {{ meetingform.csrf_token }}
+                    {{ meetingform.submit(class_="form-password") }}
+                </td>
+            </tr>
+        </table>
+
+        <div class="date__container">
+            <div class="add_day btn__small btn__blue">
+                Click to add more days
+            </div>
+            <table class="date__table">
+                <tr class="date">
+                    <td>
+                        <i class="fas fa-calendar-day date__logo"></i>
+                        Choose your date
+                        <input type="date" class="datepicker">
+                    </td>
+                    <td>
+                        <div class="hour">
+                            Choose your time    
+                            <input type="time" class="timepicker">
+                        </div>		
+                        <div class="add_hours btn__small btn__blue">
+                            Click to add more hours
+                        </div>
+                    </td>
+                </tr>
+            </table>    
+        </div>        
+    </form>
+</div>	
