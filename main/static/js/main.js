@@ -55,3 +55,17 @@ function submit_selected_dates() {
   console.log(JSON.stringify(obj));
   return true;
 };
+
+//copy meeting's link to clipboard
+function copy_to_clipboard(){
+  var copyText = document.getElementById("meeting_link");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+  if ($('#copied_text').hasClass('hidden')){
+    $('#copied_text').css('visibility', 'visible');
+    setTimeout(() => {
+      $('#copied_text').css('visibility', 'hidden');
+    }, 2000);
+  }
+}

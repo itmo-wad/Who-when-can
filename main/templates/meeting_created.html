@@ -5,9 +5,16 @@
 	<title>Meeting created</title>
 	<body>
 	{% include 'header.html' %}
+	<div class="meetingcreated__text">		
+		<h3><i class="far fa-check-square created__logo"></i>All doned</h3>
+		<br><br>
+		<h4>Send this link to all your meeting's participants:</h4>
+		<textarea id="meeting_link" cols="70" rows="1" wrap="hard">https://meetingtime.best/meetings/{{id}}</textarea>
+		<button class="btn__small btn__white" onclick="copy_to_clipboard()">Copy text</button>
+		<span id="copied_text" class="hidden" style="background-color:lightgray;font-size:1rem;">Copied</span>
+	</div>
+	
 
-	Send this link to participants of your meeting: 
-	https://meetingtime.best/meetings/{{id}}
 	
 	{% include 'footer.html' %}
 	</body>

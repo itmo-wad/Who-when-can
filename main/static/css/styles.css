@@ -12,7 +12,6 @@ html{
 body{
     padding: 15px;
     position: relative;
-    /* overflow: hidden; */
 }
 
 /* ---------------------------------------------- */
@@ -125,6 +124,7 @@ h4{
     font-weight: 700;
     width: 40%;
     background-color: rgba(4, 70, 133, 0.8);
+    font-size: 0.7rem;
     color: white;
 }
 #submit:hover,
@@ -138,6 +138,9 @@ tr{
 }
 tr:nth-child(even) {
     background-color: rgba(4, 70, 133, 0.3);
+}
+.hidden{
+    visibility: hidden;
 }
 
 
@@ -322,4 +325,28 @@ tr:nth-child(even) {
     color: rgba(4, 70, 133, 0.8);
     margin-left: 10px;
     margin-right: 10px;
+}
+
+
+/* ---------------------------------------------- */
+/* ---------------Meeting-created---------------- */
+/* ---------------------------------------------- */
+.meetingcreated__text{
+    font-size: 25px;
+    margin-top: 30px;
+    position: relative;
+    text-align: center;
+}
+.created__logo{
+    margin-right: 10px;
+    font-size: 150%;
+    color: blue;
+}
+#meeting_link{
+    background-color: rgba(4, 70, 133, 0.2);
+    resize: none;
+    overflow: auto;
+}
+#copied_text{
+
 }
