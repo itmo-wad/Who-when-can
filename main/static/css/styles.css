@@ -346,7 +346,5 @@ tr:nth-child(even) {
     background-color: rgba(4, 70, 133, 0.2);
     resize: none;
     overflow: auto;
-}
-#copied_text{
-
+    margin-right: 15px;
 }
