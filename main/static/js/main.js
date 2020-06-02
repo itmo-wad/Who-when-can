@@ -7,6 +7,26 @@ var hour_html =`
     Click to remove timeslot
   </div>
 </div>`
+
+var day_html = `
+<tr class=\"date\">
+  <td>
+    <i class=\"fas fa-calendar-day date__logo\"></i>
+    Choose your date 
+    <input type=\"date\" class=\"datepicker inline\"> 
+    <div class=\"delete_day btn__small btn__blue inline\">
+      Click to remove this day
+    </div>
+    <div class=\"clone_day btn__small btn__blue inline\">
+      Click to clone this day
+    </div>
+  </td>
+<td>
+<div class=\"add_hours btn__small btn__blue\">
+  Click to add timeslot
+</div>
+`+hour_html+`</td></tr>`;
+
 $( ".add_day" ).click(function() {
 
     $( ".date__table" ).append("<tr class=\"date\"><td><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date <input type=\"date\" class=\"datepicker inline\"> <div class=\"delete_day btn__small btn__blue inline\">Click to remove this day</div><div class=\"clone_day btn__small btn__blue inline\">Click to clone this day</div></td><td><div class=\"add_hours btn__small btn__blue\">Click to add timeslot</div>"+hour_html+"</td></tr>");   
@@ -32,6 +52,7 @@ $( "body" ).on( "click", ".add_hours", function() {
     clone = $(this).parent().parent().clone();
     clone.appendTo($(this).parent().parent().parent());
   });
+
 
 
 
