@@ -15,22 +15,20 @@ $( "body" ).on( "click", ".add_hours", function() {
 
 //add submit event handler. on button click parse all days and hours, create JSON out of this and send it to the backend
 function submit_first_dates() {
-    var json_obj = {};
-    var days = [];
-    json_obj.days=days;
-    $(".day").each(function() {
-        var hours = [];       
-        $(this).children(".hour").each(function() {
-            hours.push($(this).children(":input").val());
-            });
-        var day = {
-            "day": $(this).children(":input").val(),
+  var json_obj = {};
+  var days = [];
+  json_obj.days=days;
+  $('.date__table > tbody  > tr').each(function() {
+  var hours = [];
+  $(this).find('input').slice(1).each(function() {if ($(this).val()){hours.push($(this).val())}});
+  var day = {
+            "day": $(this).find('input').eq(0).val(),
             "hours": Object.assign({}, hours)
             }
         json_obj.days.push(day);
-    });
-    $('#available_dates').val(JSON.stringify(json_obj));
-    return true;
+  })
+  $('#available_dates').val(JSON.stringify(json_obj));
+  return true;
 };
 
 // change color of selected table element
