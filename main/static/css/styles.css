@@ -132,6 +132,10 @@ h4{
     transform: translateY(-3px);
     box-shadow: 0 5px 20px rgba(0,0,0,.2);
 }
+table{
+    table-layout: fixed;
+    border: 1px solid white;
+}
 tr{
     margin-bottom: 5px;
 }
@@ -288,6 +292,9 @@ tr:nth-child(even) {
 .logo:hover{
     transform: scale(1.3);
 }
+.authform-submit{
+    margin-top: -10px;
+}
 
 /* ---------------------------------------------- */
 /* ---------------Meeting-form------------------- */
@@ -301,15 +308,16 @@ tr:nth-child(even) {
     background-color: rgba(4, 70, 133, 0.2);
 }
 .add_day{
-    margin-top: 15px;
     text-align: center;
     width: 20%;
     margin-bottom: 15px;
+    margin-top: 15px;
+    margin-left: 370px;
 }
 .add_hours{
     text-align: center;
-    width: 40%;
-    margin-bottom: 10px;
+    margin: 10px 0px 10px 100px;
+    width: 35%;
 }
 .date__table{
     width: 100%;
@@ -322,17 +330,27 @@ tr:nth-child(even) {
 .date__logo{
     font-size: 100%;
     color: rgba(4, 70, 133, 0.8);
-    margin-left: 10px;
+    margin-left: 40px;
     margin-right: 10px;
 }
-
-
+.date__td{
+    width: 65%;
+}
+.hour__td{
+    width: 35%;
+}
+.hour{
+    margin-left: 10px;
+}
+.meetingform-submit{
+    margin-top: 15px;
+}
 .inline { 
     display: inline-block; 
     margin:10px;
     }
 
-.add_hours{margin: 10px 0px 0px 5px;}
+
 
 /* ---------------------------------------------- */
 /* ---------------Meeting-created---------------- */

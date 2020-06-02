@@ -1,3 +1,11 @@
+@media only screen and (max-width: 1420px){
+    .inline{
+        margin: 5px;
+    }
+    .add_hours{
+        width: 43%;
+    }
+}
 @media only screen and (max-width: 1200px){
     .header__logo{
         font-size: 280%;
@@ -27,6 +35,30 @@
     }
     .logo{
         left: 33%;
+    }
+    #submit{
+        width: 50%;
+    }
+    .add_day{
+        margin-left: 170px;
+    }
+    .date__logo{
+        margin-left: 10px;
+    }
+    .delete_day{
+        font-size: 0.6rem;
+    }
+    .clone_day{
+        font-size: 0.6rem;
+    }
+    .add_hours{
+        font-size: 0.6rem;
+        width: 40%;
+        margin-left: 120px;
+        margin-top: 20px;
+    }
+    .delete_hours{
+        font-size: 0.6rem;
     }
 }
 
@@ -83,9 +115,31 @@
     }
     .add_day{
         width: 25%;
+        margin-left: 100px;
     }
+    .date__logo{
+        margin-left: 10px;
+    }
+    .date__td{
+        width: 50%;
+    }
+    .hour__td{
+        width: 50%;
+    }
+    .delete_day{
+        font-size: 0.6rem;
+        margin-left: 15px;
+    }
+    .clone_day{
+        font-size: 0.6rem;
+    }    
     .add_hours{
-        width: 55%;
+        width: 45%;
+        font-size: 0.6rem;
+        margin-left: 60px;
+    }
+    .delete_hours{
+        font-size: 0.6rem;
     }
 }
 
@@ -162,5 +216,11 @@
     }
     .header__user--logout{
         margin-left: 30%;
+    }
+    .datepicker{
+        margin-left: 40px;
+    }
+    .date__logo{
+        margin-left: 40px;
     }
 }
