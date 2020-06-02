@@ -33,16 +33,26 @@
                     <td>
                         <i class="fas fa-calendar-day date__logo"></i>
                         Choose your date
-                        <input type="date" class="datepicker">
+                        <input type="date" class="datepicker inline">
+                        <div class="delete_day btn__small btn__blue inline">
+                        Click to remove this day
+                        </div>
+                        <div class="clone_day btn__small btn__blue inline">
+                            Click to clone this day
+                        </div>	
                     </td>
                     <td>
+                        <div class="add_hours btn__small btn__blue">
+                            Click to add timeslot
+                        </div>
                         <div class="hour">
                             Choose your time    
-                            <input type="time" class="timepicker">
-                        </div>		
-                        <div class="add_hours btn__small btn__blue">
-                            Click to add more hours
-                        </div>
+                            <input type="time" class="timepicker inline">
+                            <div class="delete_hours btn__small btn__blue inline">
+                            Click to remove timeslot
+                            </div>	
+                        </div>	
+                        
                     </td>
                 </tr>
             </table>    

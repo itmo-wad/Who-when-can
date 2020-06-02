@@ -328,6 +328,13 @@ tr:nth-child(even) {
 }
 
 
+.inline { 
+    display: inline-block; 
+    margin:10px;
+    }
+
+.add_hours{margin: 10px 0px 0px 5px;}
+
 /* ---------------------------------------------- */
 /* ---------------Meeting-created---------------- */
 /* ---------------------------------------------- */
@@ -348,3 +355,5 @@ tr:nth-child(even) {
     overflow: auto;
     margin-right: 15px;
 }
+
+

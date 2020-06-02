@@ -1,16 +1,38 @@
 //add day event handler. on button click add new empty day
+var hour_html =`
+<div class=\"hour\">
+  Choose your time 
+  <input type=\"time\" class=\"timepicker inline\"> 
+  <div class=\"delete_hours btn__small btn__blue inline\">
+    Click to remove timeslot
+  </div>
+</div>`
 $( ".add_day" ).click(function() {
-    // $( ".date" ).append( $( "<div class=\"day\"><div class=\"col span_1_of_2\"><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date<input type=\"date\" class=\"datepicker\"></div><div class=\"col span_1_of_2\"><div class=\"hour\">Choose your time<input type=\"time\" class=\"timepicker\"></div><div class=\"add_hours btn__small btn__blue\">Click to add more hours</div></div></div>" ) );
-    $( ".date__table" ).append( $("<tr class=\"date\"><td><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date<input type=\"date\" class=\"datepicker\"></td><td><div class=\"hour\">Choose your time<input type=\"time\" class=\"timepicker\"></div><div class=\"add_hours btn__small btn__blue\">Click to add more hours</div></td></tr>"));
-    
+
+    $( ".date__table" ).append("<tr class=\"date\"><td><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date <input type=\"date\" class=\"datepicker inline\"> <div class=\"delete_day btn__small btn__blue inline\">Click to remove this day</div><div class=\"clone_day btn__small btn__blue inline\">Click to clone this day</div></td><td><div class=\"add_hours btn__small btn__blue\">Click to add more hours</div>"+hour_html+"</td></tr>");   
     
   });
 
 //add hour event handler. on button click add new empty hour
 $( "body" ).on( "click", ".add_hours", function() {
-    $(this).before($( "<div class=\"hour\">Choose your time<input type=\"time\" class=\"timepicker\"></div>" ) );
-    	
+    $(this).parent().append(hour_html);
   });
+
+//delete hour
+  $( "body" ).on( "click", ".delete_hours", function() {
+    $(this).parent().remove();
+  });
+
+  //delete day
+  $( "body" ).on( "click", ".delete_day", function() {
+    $(this).parent().parent().remove();
+  });
+
+  $( "body" ).on( "click", ".clone_day", function() {
+    clone = $(this).parent().parent().clone();
+    clone.appendTo($(this).parent().parent().parent());
+  });
+
 
 
 //add submit event handler. on button click parse all days and hours, create JSON out of this and send it to the backend
