@@ -79,6 +79,7 @@ h4{
     font-size: 0.8rem;
     font-weight: 700;
     margin-top: 5px;
+    text-align: center;
 }
 .btn__small:hover,
 .btn__small:active{
@@ -330,7 +331,7 @@ tr:nth-child(even) {
 .date__logo{
     font-size: 100%;
     color: rgba(4, 70, 133, 0.8);
-    margin-left: 40px;
+    margin-left: 140px;
     margin-right: 10px;
 }
 .date__td{
