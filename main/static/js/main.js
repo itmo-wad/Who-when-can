@@ -29,7 +29,7 @@ var day_html = `
 
 $( ".add_day" ).click(function() {
 
-    $( ".date__table" ).append("<tr class=\"date\"><td class=\"date__td\"><i class=\"fas fa-calendar-day date__logo\"></i>Choose your date <input type=\"date\" class=\"datepicker inline\"> <div class=\"delete_day btn__small btn__blue inline\">Click to remove this day</div><div class=\"clone_day btn__small btn__blue inline\">Click to clone this day</div></td><td class=\"hour__td\"><div class=\"add_hours btn__small btn__blue\">Click to add timeslot</div>"+hour_html+"</td></tr>");   
+    $( ".date__table" ).append(day_html);   
     
   });
 
