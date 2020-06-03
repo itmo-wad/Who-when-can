@@ -35,7 +35,7 @@ def Auth(authform):
             user = mongo.db.users.find_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
             if user != None:
                 session['current_user_id'] = str(user['_id'])
-                pass ## do something. go to your meeting list for example
+                return 'exists'
             else:
                 #if not, register him
                 session['current_user_id'] = str(mongo.db.users.insert_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data}).inserted_id)
@@ -120,6 +120,8 @@ def meeting_created(id):
     except:
         flash("Sorry, there is no meeting you trying to access")
     return redirect(url_for('create_step_1'))
+
+
 #
 #create page after meeting creation for id copy and instructions
 #
@@ -136,6 +138,7 @@ def meetings(id):
         if meeting_id == None:
             flash("Sorry, there is no meeting you trying to access")
         else:
+            session['meeting_id_hash'] = id
             session['meeting_id'] = meeting_id
             return redirect(url_for('meeting_login'))
     except Exception as e:
@@ -147,7 +150,17 @@ def meetings(id):
 @app.route('/meeting_login', methods=['GET', 'POST']) #authentication page for table filling
 def meeting_login():
     authform = AuthForm(request.form)
-    if Auth(authform):
+    resp = Auth(authform)
+    if resp:
+        if resp=='exists':
+            user = mongo.db.meetings.find_one({'meeting_id_hash': session['meeting_id_hash']})
+            print(user)
+            if user.get('creator') == ObjectId(session['current_user_id']):
+                session['creator']=session['meeting_id_hash']
+                return redirect(url_for('meeting_edit_creator'))
+            elif session['current_user_id'] in user["users"]:
+                session['user']=session['meeting_id_hash']
+                return redirect(url_for('meeting_edit'))
         return redirect(url_for('time_picking'))
     else:
         return render_template('meeting_login.html', authform=authform)
@@ -176,3 +189,34 @@ def finish():
             flash("Sorry, there is no meeting you trying to access")
             print(e) 
     return render_template('error.html')    
+
+
+
+####################################################################
+###########                    edit   part            ##############
+####################################################################
+
+####################################################################
+###########           UNDER CONSTRUCTION  HELP!!!111  ##############
+####################################################################
+
+@app.route('/meeting_edit_creator') # page for creator meeting edit
+def meeting_edit_creator():
+    try:
+        if session['user_available'] and session['creator']==session['meeting_id_hash']:
+            return render_template('success.html') 
+    except Exception as e:
+            flash("Sorry, there is no meeting you trying to access")
+            print(e) 
+    return render_template('error.html')  
+
+
+@app.route('/meeting_edit') # page for user time repick
+def meeting_edit():
+    try:
+        if session['user_available'] and session['user']==session['meeting_id_hash']:
+            return render_template('success.html')
+    except Exception as e:
+            flash("Sorry, there is no meeting you trying to access")
+            print(e) 
+    return render_template('error.html')  
