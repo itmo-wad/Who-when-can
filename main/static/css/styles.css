@@ -67,6 +67,7 @@ h4{
 .btn__big:active{
     background-color: rgba(255, 123, 0, .9);
     box-shadow: 0 5px 20px rgba(0,0,0,.2);
+    cursor: pointer;
 }
 .btn__small,
 .btn__small:link,
@@ -84,6 +85,7 @@ h4{
 .btn__small:active{
     background-color: rgba(255, 123, 0, .9);
     box-shadow: 0 5px 20px rgba(0,0,0,.2);
+    cursor: pointer;
 }
 .btn__white{
     background-color: white;
@@ -128,6 +130,7 @@ h4{
 #submit:active{
     background-color: rgba(255, 123, 0, .9);
     box-shadow: 0 5px 20px rgba(0,0,0,.2);
+    cursor: pointer;
 }
 table{
     table-layout: fixed;
