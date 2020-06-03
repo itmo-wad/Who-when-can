@@ -189,8 +189,8 @@ tr:nth-child(even) {
     background-image: linear-gradient(45deg,rgba(4, 70, 133, 0.8) 55%, rgba(25, 159, 221, 0.85)), url('../img/calendar.jpg');
     opacity: 0.9;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    /*background-position: center;*/
+    /*background-attachment: fixed;*/
     /* text-align: center; */
     height: 20vh;
     position: relative;
@@ -372,6 +372,9 @@ tr:nth-child(even) {
     resize: none;
     overflow: auto;
     margin-right: 15px;
+    margin:10px 0 0 6px;
 }
 
-
+.selected-cell{
+background-color: rgba(255, 123, 0, .9);
+}

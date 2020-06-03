@@ -1,4 +1,4 @@
-//add day event handler. on button click add new empty day
+//html code for hour
 var hour_html =`
 <div class=\"hour\">
   Choose your time 
@@ -8,6 +8,7 @@ var hour_html =`
   </div>
 </div>`
 
+//html code for day
 var day_html = `
 <tr class=\"date\">
   <td class=\"date__td\">
@@ -27,10 +28,9 @@ var day_html = `
 </div>
 `+hour_html+`</td></tr>`;
 
+//add day
 $( ".add_day" ).click(function() {
-
-    $( ".date__table" ).append(day_html);   
-    
+    $(".date__table tbody").append(day_html);   
   });
 
 //add hour event handler. on button click add new empty hour
@@ -48,13 +48,11 @@ $( "body" ).on( "click", ".add_hours", function() {
     $(this).parent().parent().remove();
   });
 
+  //clone day
   $( "body" ).on( "click", ".clone_day", function() {
     clone = $(this).parent().parent().clone();
     clone.appendTo($(this).parent().parent().parent());
   });
-
-
-
 
 //add submit event handler. on button click parse all days and hours, create JSON out of this and send it to the backend
 function submit_first_dates() {
@@ -98,7 +96,7 @@ function submit_selected_dates() {
 };
 
 //copy meeting's link to clipboard
-function copy_to_clipboard(){
+/*function copy_to_clipboard(){
   var copyText = document.getElementById("meeting_link");
   copyText.select();
   copyText.setSelectionRange(0, 99999)
@@ -109,4 +107,33 @@ function copy_to_clipboard(){
       $('#copied_text').css('visibility', 'hidden');
     }, 2000);
   }
-}
+}*/
+
+function copy_text(){
+$("#meeting_link").select();
+ document.execCommand('copy');
+ $("#meeting_link").blur();
+$('#copied_text').css('visibility', 'visible');
+setTimeout(() => {
+  $('#copied_text').css('visibility', 'hidden');
+}, 1000);
+};
+
+
+// show hide the notifications text
+$(document).ready(
+  $('.header__notifications--logo').click(
+      function(){
+          if ($('.header__notifications--text').hasClass('hide')){
+              $('.header__notifications--text').css("display", "block");
+              $('.header__notifications--text').addClass('show');
+              $('.header__notifications--text').removeClass('hide');
+          }
+          else{
+              $('.header__notifications--text').css("display", "none");
+              $('.header__notifications--text').addClass('hide');
+              $('.header__notifications--text').removeClass('show');
+          }
+      }
+  )
+)
