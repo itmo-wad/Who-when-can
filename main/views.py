@@ -1,4 +1,4 @@
-from flask import Flask, session, request, redirect, url_for, render_template, flash, jsonify, make_response
+from flask import Flask, session, request, redirect, url_for, render_template, flash, jsonify, make_response, send_from_directory
 from . forms import  AuthForm, MeetingForm, DaysAndHoursForm
 from main import app
 import hashlib
@@ -14,6 +14,10 @@ mongo = PyMongo(app)
 
 pepper ='*VrLQjDX&ZhmEmQV%3Q<'
 key=b'super_secret_k3y_y0u_will_n3v3r_gue$$'
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static/img', 'favicon.ico')
 
 @app.route('/')
 def index():        	
