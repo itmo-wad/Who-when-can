@@ -11,6 +11,10 @@
     .date__logo{
         margin-left: 50px;
     }
+    .daysandhoursform-submit{
+        width: 20%; 
+        margin-left: 40%;
+    }
 }
 @media only screen and (max-width: 1200px){
     .header__logo{
@@ -42,7 +46,7 @@
     .logo{
         left: 33%;
     }
-    #submit{
+    .meetingform-submit{
         width: 50%;
     }
     .add_day{
@@ -115,7 +119,7 @@
     .logo{
         left: 25%;
     }
-    #submit{        
+    .meetingform-submit{        
         font-size: 0.7rem;
         width: 70%;
     }
@@ -197,7 +201,7 @@
         margin: 0;
         height: 75px;
     }
-    #submit{
+    .meetingform-submit{
         font-size: 1rem;
         width: 100%;
     }
