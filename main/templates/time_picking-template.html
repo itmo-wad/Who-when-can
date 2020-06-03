@@ -1,0 +1,8 @@
+<h2>Choose your comfortable time</h2>
+<h4>(*Selected time will be highlighted in orange)</h4>
+{{table|safe}}
+<form class="form-DaysAndHoursForm" method="POST" onsubmit="submit_selected_dates()">
+	{{ daysandhoursform.selecteddaysandhours(class_="daysandhoursform-selecteddaysandhours") }}
+    {{ daysandhoursform.csrf_token }}
+    {{ daysandhoursform.submit(class_="daysandhoursform-submit") }}
+</form>

@@ -60,9 +60,9 @@ def table_filling(daysandhoursform):
         #extract dates for this meeting from db and create HTML table from it
         available_dates_json = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})['available_dates']
         build_direction = "TOP_TO_BOTTOM"
-        #table_attributes = {"style": "width:100%"}
+        table_attributes = {"class": "result__table"}
         #table = json2table.convert(infoFromJson,build_direction=build_direction,table_attributes=table_attributes))
-        table = json2table.convert(available_dates_json,build_direction=build_direction)
+        table = json2table.convert(available_dates_json,build_direction=build_direction, table_attributes=table_attributes)
         return table
     return False
 

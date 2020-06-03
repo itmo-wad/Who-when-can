@@ -6,12 +6,7 @@
 </head>
 	<body>
 	{% include 'header.html' %}
-	{{table|safe}}
-	<form class="form-DaysAndHoursForm" method="POST" onsubmit="submit_selected_dates()">
-        {% for field in daysandhoursform %}
-            {{field}}
-        {% endfor %}
-	</form>
+	{% include 'time_picking-template.html' %}
 	{% include 'footer.html' %}
 </body>
 </html>
