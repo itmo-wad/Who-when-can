@@ -2,4 +2,5 @@ from main import app
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port="31340",threaded=True, debug=True)
+    context = ('ssl/server.crt', 'ssl/server.key')#certificate and key files
+    app.run(host="0.0.0.0",port="443",threaded=True, debug=True, ssl_context=context)
