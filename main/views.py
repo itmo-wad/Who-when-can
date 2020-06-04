@@ -8,12 +8,21 @@ import base64
 from flask_pymongo import PyMongo
 from bson import ObjectId
 import json2table
+from main import config
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/whowhencandb"
+app.config["MONGO_URI"] = config.mongo_uri
 mongo = PyMongo(app)
 
-pepper ='*VrLQjDX&ZhmEmQV%3Q<'
-key=b'super_secret_k3y_y0u_will_n3v3r_gue$$'
+#security stuff
+@app.after_request
+def add_headers(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN; DENY"
+    response.headers["X-XSS-Protection"]="1; mode=block"
+    response.headers["X-Content-Type-Options"]="nosniff"
+    #response.headers["Cache-control"]="no-store"
+    #response.headers["Pragma"]="no-cache"
+    response.headers["Server"]="no server for you, dear hacker"
+    return response
 
 @app.route('/favicon.ico')
 def favicon():
@@ -109,7 +118,7 @@ def create_step_3():
         daysandhoursform = DaysAndHoursForm(request.form)
         result = table_filling(daysandhoursform)
         if result == 'Updated':
-            meeting_id_hash = hashlib.sha256(pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()
+            meeting_id_hash = hashlib.sha256(config.pepper.encode('UTF-8')+ session['meeting_id'].encode('UTF-8')).hexdigest()
             mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'meeting_id_hash':meeting_id_hash}})
             return redirect(url_for('meeting_created',id=meeting_id_hash))
         elif result != False:
