@@ -1,14 +1,9 @@
 from flask import Flask, session, request, redirect, url_for, render_template, flash, jsonify, make_response, send_from_directory
 from . forms import  AuthForm, MeetingForm, DaysAndHoursForm
-from main import app
-import hashlib
-import json
-import hmac
-import base64
+from main import app, config
 from flask_pymongo import PyMongo
 from bson import ObjectId
-import json2table
-from main import config
+import hashlib, json, hmac, base64, json2table, datetime
 
 app.config["MONGO_URI"] = config.mongo_uri
 mongo = PyMongo(app)
@@ -85,7 +80,14 @@ def table_filling(daysandhoursform):
             print(e)
     else:
         #extract dates for this meeting from db and create HTML table from it
-        available_dates_json = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})['available_dates']
+        dates_json = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})
+        available_dates_json = dates_json['available_dates']
+        duration = dates_json['duration']
+        print(available_dates_json)
+        print(duration)
+        for day in available_dates_json['days']:
+            for hour in day['hours']:
+                 day['hours'][hour] = day['hours'][hour] + ' - ' + ':'.join([str(elem) for elem in (str(datetime.datetime.strptime(day['hours'][hour], '%H:%M') + datetime.timedelta(hours=int(duration.split(':')[0]), minutes=int(duration.split(':')[1]))).split()[1].split(':')[:-1])]) # oneliner to make interval from start and duration
         build_direction = "TOP_TO_BOTTOM"
         table_attributes = {"class": "result__table"}
         #table = json2table.convert(infoFromJson,build_direction=build_direction,table_attributes=table_attributes))
@@ -127,7 +129,7 @@ def create_step_2():
         if request.method == 'POST' and meetingform.validate_on_submit():
             try:
                 #insert creator name, meeting name, some info and choosen dates to the db
-                session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data),'users':{}}).inserted_id)
+                session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'duration': str(meetingform.duration.data), 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data),'users':{}}).inserted_id)
                 return redirect(url_for('create_step_3'))
             except Exception as e:
                 flash("Something wrong")

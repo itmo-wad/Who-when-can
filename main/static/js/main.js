@@ -28,6 +28,8 @@ var day_html = `
 </div>
 `+hour_html+`</td></tr>`;
 
+
+
 //add day
 $( ".add_day" ).click(function() {
     $(".date__table tbody").append(day_html);   
@@ -84,7 +86,7 @@ function submit_selected_dates() {
   var obj = {"day":{}};
   $( "table" ).find( ".selected-cell" ).each(function(){
     var date = $(this).parent().parent().parent().parent().parent().find('td').first().text();
-    var hour = $(this).text();
+    var hour = $(this).text().split(" ")[0];
     if (obj.day[date]== undefined){
       obj.day[date]={'hours':[hour]}}
     else{
