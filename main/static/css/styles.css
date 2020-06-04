@@ -20,6 +20,7 @@ html{
 body{
     padding: 15px;
     position: relative;
+    min-width: 350px;
 }
 
 /* ---------------------------------------------- */
