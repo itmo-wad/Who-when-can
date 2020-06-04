@@ -24,6 +24,18 @@ def add_headers(response):
     response.headers["Server"]="no server for you, dear hacker"
     return response
 
+
+@app.route('/logout')
+def logout():        	
+    try:
+        if session['user_available']:
+            session.clear()
+            session['user_available']=False
+            return redirect(url_for('create_step_1')) ## change endpoint to: redirect to the list of the meetings (?)
+    except:
+        pass
+    return redirect(url_for('create_step_1'))
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory('static/img', 'favicon.ico')
@@ -48,11 +60,13 @@ def Auth(authform):
             user = mongo.db.users.find_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
             if user != None:
                 session['current_user_id'] = str(user['_id'])
+                session['current_user'] = authform.username.data
                 return 'exists'
             else:
                 #if not, register him
                 session['current_user_id'] = str(mongo.db.users.insert_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data}).inserted_id)
             session['user_available'] = True
+            session['current_user'] = authform.username.data
             return True
         except Exception as e:
             flash("Something wrong")
@@ -85,16 +99,27 @@ def table_filling(daysandhoursform):
 ####################################################################
 @app.route('/create_step_1', methods=['GET', 'POST'])
 def create_step_1():
-    authform = AuthForm(request.form)
-    if Auth(authform):
-        return redirect(url_for('create_step_2'))
+    try:
+        session['user_available']
+    except:
+        session['user_available'] = False
+    if session['user_available'] != True:
+        authform = AuthForm(request.form)
+        if Auth(authform):
+            return redirect(url_for('create_step_2'))
+        else:
+            return render_template('create_step_1.html', authform=authform)
     else:
-        return render_template('create_step_1.html', authform=authform)
+        return redirect(url_for('create_step_2'))
     
 
 
 @app.route('/create_step_2', methods=['GET','POST']) #fill meting name, some info and choose dates
 def create_step_2():
+    try:
+        session['user_available']
+    except:
+        session['user_available']=False
     if session['user_available'] != True:
         return redirect(url_for('create_step_1'))
     else:
@@ -112,6 +137,13 @@ def create_step_2():
 
 @app.route('/create_step_3', methods=['GET','POST']) ##choose availabe dates for admin. 
 def create_step_3():
+    try:
+        session['user_available']
+        session['meeting_id']
+    except:
+        session['user_available']=False
+        return redirect(url_for('create_step_1'))
+    
     if session['user_available'] != True:
         return redirect(url_for('create_step_1'))
     else:
