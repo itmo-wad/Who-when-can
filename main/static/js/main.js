@@ -2,7 +2,7 @@
 var hour_html =`
 <div class=\"hour\">
   Choose your time 
-  <input type=\"time\" class=\"timepicker inline\"> 
+  <input type=\"time\" class=\"timepicker inline\" required> 
   <div class=\"delete_hours btn__small btn__blue inline\">
     Remove
   </div>
@@ -14,7 +14,7 @@ var day_html = `
   <td class=\"date__td\">
     <i class=\"fas fa-calendar-day date__logo\"></i>
     Choose your date 
-    <input type=\"date\" class=\"datepicker inline\"> 
+    <input type=\"date\" class=\"datepicker inline\" required> 
     <div class=\"delete_day btn__small btn__blue inline\">
       Click to remove this day
     </div>
