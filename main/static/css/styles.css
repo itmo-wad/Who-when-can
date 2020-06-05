@@ -143,7 +143,7 @@ h4{
 }
 table{
     table-layout: fixed;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
 }
 tr{
     margin-bottom: 5px;
