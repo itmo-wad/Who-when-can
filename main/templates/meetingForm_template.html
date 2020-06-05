@@ -1,8 +1,4 @@
-<div class="Meetingform">    
-    <i class="far fa-plus-square logo"></i>
-    <h2>
-        Create new meeting
-    </h2>
+<div class="Meetingform"> 
     <form class="form-MeetingForm" method="POST" onsubmit="submit_first_dates()">
         <table class="meetingForm__table">
             <tr class="meetingForm__row">
@@ -18,11 +14,9 @@
                     <h4>Meeting duration</h4>
                     {{ meetingform.duration(class_="datepicker") }}
                 </td>
-                <td class="available_dates">
-                    {{ meetingform.available_dates(class_="meetingform-available_dates") }}
-                </td>
                 <td class="submit">
                     {{ meetingform.csrf_token }}
+                    {{ meetingform.available_dates}}
                     {{ meetingform.submit(class_="meetingform-submit") }}
                 </td>
             </tr>
