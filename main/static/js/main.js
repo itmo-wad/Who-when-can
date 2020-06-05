@@ -126,6 +126,7 @@ setTimeout(() => {
 $(document).ready(
   $('.header__notifications--logo').click(
       function(){
+          $(this).removeAttr('style');
           if ($('.header__notifications--text').hasClass('hide')){
               $('.header__notifications--text').css("display", "block");
               $('.header__notifications--text').addClass('show');
