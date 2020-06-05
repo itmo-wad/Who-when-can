@@ -129,7 +129,7 @@ def create_step_2():
         meetingform = MeetingForm(request.form)
         if request.method == 'POST' and meetingform.validate_on_submit():
             try:
-                if 'hours' not in meetingform.info.data:
+                if 'hours' not in meetingform.available_dates.data:
                     flash("You cant create meeting without timeslots")
                     return render_template('create_step_2.html', meetingform=meetingform)
                 else:
