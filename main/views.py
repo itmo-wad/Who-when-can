@@ -182,12 +182,12 @@ def meeting_created(id):
 def meetings(id):
     try:
         #check if meeting ID exists 
-        meeting_id = str(mongo.db.meetings.find_one({'meeting_id_hash': id})['_id']) 
+        meeting_id = mongo.db.meetings.find_one({'meeting_id_hash': id}) 
         if meeting_id == None:
             flash("Sorry, there is no meeting you trying to access")
         else:
             session['meeting_id_hash'] = id
-            session['meeting_id'] = meeting_id
+            session['meeting_id'] = str(meeting_id['_id'])
             return redirect(url_for('meeting_login'))
     except Exception as e:
             flash("Something wrong")
