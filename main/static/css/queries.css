@@ -72,7 +72,7 @@
     }
 }
 
-/* small tablet to big tablet from 768px to 1023px */
+/* small tablet to big tablet from 816px to 1023px */
 @media only screen and (max-width: 1023px){
     /* html{
         font-size: 14px;
@@ -119,6 +119,15 @@
     .logo{
         left: 25%;
     }
+    .meetingform-meetingname{
+        width: 90%;
+    }
+    .meetingform-info{
+        width: 100%;
+    }
+    #duration{
+        width: 60%;
+    }
     .meetingform-submit{        
         font-size: 0.7rem;
         width: 70%;
@@ -153,8 +162,7 @@
     }
 }
 
-/* small phones to small tablets */
-@media only screen and (max-width: 767px){
+@media only screen and (max-width: 815px){
     html{
         font-size: 12px;
     }
@@ -201,9 +209,26 @@
         margin: 0;
         height: 75px;
     }
+    .meetingname,.info,.meeting_duration, .available_dates,.submit{
+        display: block;
+    }
+    .meetingform-meetingname{
+        width: 50%;
+        margin-bottom: 10px;
+    }
+    .meetingform-info{
+        width: 50%;
+    }
+    .meeting_duration{
+        width: 50%;
+        margin-left: 25%;
+    }
+    #duration{
+        width: 100%;
+    }
     .meetingform-submit{
         font-size: 1rem;
-        width: 100%;
+        width: 45%;
     }
     .date__td{
         width: 50%;
@@ -219,7 +244,7 @@
     }
 }
 
-@media only screen and (max-width: 613px){
+@media only screen and (max-width: 615px){
     html{
         font-size: 11px;
     }
@@ -239,9 +264,6 @@
     .header__user--logout{
         margin-left: 30%;
     }
-    .datepicker{
-        margin-left: 40px;
-    }
     .date__logo{
         margin-left: 40px;
     }
@@ -249,9 +271,6 @@
         width: 30%;
         margin-left: 60px;
     }
-}
-
-@media only screen and (max-width: 500px){
     .logo{
         left: 15%;
         font-size: 160%;
@@ -259,8 +278,7 @@
     .date__table, .meetingForm__table{
         width:100%;
     }
-
-    .date__td, .hour__td, .meetingname, .info, .available_dates,.submit{
+    .date__td, .hour__td{
         display:block;
     }
     .date{
@@ -270,12 +288,9 @@
     .form-MeetingForm{
         text-align: center;
     }
-    .meetingform-submit{
-        width: 50%;
-    }
     .add_day{
-        width: 50%;
-        margin-left: 25%;
+        width: 40%;
+        margin-left: 30%;
     }
     .date__td{
         width: 100%;
@@ -286,15 +301,15 @@
     .date__logo{
         margin-left: 0px;
     }
-    .datepicker, .timepicker{
+    .date__td .datepicker, .hour__td .hour .timepicker{
         display: block;
         width: 50%;
         margin-left: 25%;
     }
     .clone_day,.delete_day ,.add_hours,.delete_hours{
         display: block;
-        width: 50%;
-        margin-left: 25%;
+        width: 30%;
+        margin-left: 35%;
     }
     .result__table{
         width: 100%;

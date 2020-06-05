@@ -20,7 +20,7 @@ html{
 body{
     padding: 15px;
     position: relative;
-    min-width: 350px;
+    min-width: 400px;
 }
 
 /* ---------------------------------------------- */
@@ -148,11 +148,15 @@ table{
 tr{
     margin-bottom: 5px;
 }
-tr:nth-child(even) {
+.date__table tr:nth-child(even),
+.result__table tr:nth-child(even) {
     background-color: rgba(4, 70, 133, 0.3);
 }
 .hidden{
     visibility: hidden;
+}
+.meetingForm__table td{
+    vertical-align: top;
 }
 
 
@@ -310,6 +314,21 @@ tr:nth-child(even) {
 /* ---------------------------------------------- */
 .meetingForm__table{
     width: 100%;
+    text-align: center;
+}
+.meetingForm__row{
+    background-color: white;
+}
+.meetingform-meetingname{
+    width: 60%;
+}
+.meetingform-info{
+    resize: none;
+    width: 80%;
+    height: 50px;
+}
+#duration{
+    width: 40%;
 }
 .date__container{
     overflow: auto;
@@ -359,7 +378,9 @@ tr:nth-child(even) {
     display: inline-block; 
     margin:10px;
     }
-
+.delete_day,.delete_hours{
+    background-color: rgba(133, 19, 19, 0.8);
+}
 
 
 /* ---------------------------------------------- */

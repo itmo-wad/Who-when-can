@@ -5,7 +5,7 @@
     </h2>
     <form class="form-MeetingForm" method="POST" onsubmit="submit_first_dates()">
         <table class="meetingForm__table">
-            <tr>
+            <tr class="meetingForm__row">
                 <td class="meetingname">
                     <h4>Meeting's name</h4>
                     {{ meetingform.meetingname(class_="meetingform-meetingname") }}
@@ -14,7 +14,7 @@
                     <h4>Additional information</h4>
                     {{ meetingform.info(class_="meetingform-info") }}
                 </td>
-                <td class="available_dates">
+                <td class="meeting_duration">
                     <h4>Meeting duration</h4>
                     {{ meetingform.duration(class_="datepicker") }}
                 </td>
