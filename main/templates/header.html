@@ -20,16 +20,20 @@
         <a href="/logout" class="header__user--logout btn__big btn__white">Log out</a>
     </div>
     <div class="header__notifications">
-        <i class="fas fa-bell header__notifications--logo"></i>
+        {% with messages = get_flashed_messages() %}
+        <i class="fas fa-bell header__notifications--logo"
+        {% if messages %}
+        style="animation: notif 1s infinite;"
+        {% endif %}
+        ></i>
         <div class="header__notifications--text hide">
-            {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
                         <p>Error: {{ message }}</p>
                     {% endfor %}
                 {% endif %}
-            {% endwith %}
         </div>
+        {% endwith %}
     </div>
     
 </div>

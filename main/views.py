@@ -162,11 +162,11 @@ def create_step_3():
 
 @app.route('/meeting_created/<id>')
 def meeting_created(id):        	
-    try:
-        if session['user_available']:
+    if session.get('user_available'):
+        if mongo.db.meetings.find_one({'meeting_id_hash': id}):
             return render_template('meeting_created.html', id=id) ## change endpoint to: redirect to the list of the meetings (?)
-    except:
-        flash("Sorry, there is no meeting you trying to access")
+        else:
+            flash("Sorry, there is no meeting you trying to access")
     return redirect(url_for('create_step_1'))
 
 

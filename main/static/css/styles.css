@@ -190,6 +190,17 @@ tr{
         transform: translateX(0);
     }
 }
+@keyframes notif {
+    0% {
+        color: rgb(255, 123, 0);
+    }
+    50% {
+        color: rgb(199, 20, 26);
+    }
+    100% {
+        color: rgb(255, 123, 0);
+    }
+}
 
 
 
