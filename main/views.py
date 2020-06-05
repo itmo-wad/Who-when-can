@@ -56,6 +56,7 @@ def Auth(authform):
             if user != None:
                 session['current_user_id'] = str(user['_id'])
                 session['current_user'] = authform.username.data
+                session['user_available'] = True
                 return 'exists'
             else:
                 #if not, register him
