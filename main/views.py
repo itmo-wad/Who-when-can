@@ -129,9 +129,13 @@ def create_step_2():
         meetingform = MeetingForm(request.form)
         if request.method == 'POST' and meetingform.validate_on_submit():
             try:
-                #insert creator name, meeting name, some info and choosen dates to the db
-                session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'duration': str(meetingform.duration.data), 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data),'users':{}}).inserted_id)
-                return redirect(url_for('create_step_3'))
+                if 'hours' not in meetingform.info.data:
+                    flash("You cant create meeting without timeslots")
+                    return render_template('create_step_2.html', meetingform=meetingform)
+                else:
+                    #insert creator name, meeting name, some info and choosen dates to the db
+                    session['meeting_id'] = str(mongo.db.meetings.insert_one({'name': meetingform.meetingname.data, 'info': meetingform.info.data, 'duration': str(meetingform.duration.data), 'creator':ObjectId(session['current_user_id']), 'available_dates': json.loads(meetingform.available_dates.data),'users':{}}).inserted_id)
+                    return redirect(url_for('create_step_3'))
             except Exception as e:
                 flash("Something wrong")
                 print(e)
