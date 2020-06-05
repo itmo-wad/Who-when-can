@@ -20,15 +20,15 @@ TODO list:
 - [x] Assemble team
 - [x] Discuss our project
 - [x] Make github project page
-- [ ] Discuss teammates roles
+- [x] Discuss teammates roles
 - [x] Choose technologies stack
 - [x] Buy VPS
 - [x] Buy domain name :^)
-- [ ] Create draft backend
+- [x] Create draft backend
 - [x] Accidentally delete all files
 - [x] Restore some of them and write everything again
-- [ ] Create draft frontend
-- [ ] Work hard
+- [x] Create draft frontend
+- [x] Work hard
 - [ ] Make production version
 - [ ] Release
 - [ ] Make a presentation for WAD course
