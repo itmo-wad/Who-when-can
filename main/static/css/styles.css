@@ -158,7 +158,9 @@ tr{
 .meetingForm__table td{
     vertical-align: top;
 }
-
+ul{
+    list-style-type:none;
+}
 
 /* ---------------------------------------------- */
 /* -----------------Animation-------------------- */
@@ -429,13 +431,16 @@ background-color: rgba(255, 123, 0, .9);
     margin-left: 10%;
     text-transform: capitalize;
     text-align: center;
-    
+    table-layout: auto;
 }
 .result__table .result__table{
     margin-left: 0;
     width: 100%;
     border-collapse: collapse;
     border-width: 0;
+}
+.result__table .result__table .result__table{
+    border: 1px solid white;
 }
 
 .result__table tr {
@@ -446,10 +451,17 @@ background-color: rgba(255, 123, 0, .9);
     margin-top: 20px;
     margin-left: 45%;
     width: 10%;
-
+}
+table table td{
+    min-width: 150px;
 }
 table table table td{
     cursor: pointer;
+}
+table table table th,
+table table table td{
+    min-width: 50px;
+    border: 1px solid white;
 }
 
 /* ---------------------------------------------- */
