@@ -30,8 +30,8 @@ TODO list:
 - [x] Create draft frontend
 - [x] Work hard
 - [x] Make production version
-- [ ] Release
+- [x] Release
 - [x] Make a presentation for WAD course
-- [ ] Enjoy your life
+- [x] Enjoy your life
 
 
