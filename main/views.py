@@ -52,15 +52,24 @@ def Auth(authform):
     if request.method == 'POST' and authform.validate_on_submit():
         try:
             #check if name+username+password already exists 
-            user = mongo.db.users.find_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data})
+            #
+            user = mongo.db.users.find_one({'username': authform.username.data})
             if user != None:
-                session['current_user_id'] = str(user['_id'])
-                session['current_user'] = authform.username.data
-                session['user_available'] = True
-                return 'exists'
+                #check password
+                user = mongo.db.users.find_one({'username': authform.username.data, 'password': hashlib.sha256(config.pepper.encode('UTF-8')+ authform.password.data.encode('UTF-8')).hexdigest()})
+                if user != None:
+                    session['current_user_id'] = str(user['_id'])
+                    session['current_user'] = authform.username.data
+                    session['user_available'] = True
+                    return 'exists'
+                else:
+                    return 'wrong password'
             else:
                 #if not, register him
-                session['current_user_id'] = str(mongo.db.users.insert_one({'name': authform.name.data, 'username': authform.username.data, 'password': authform.password.data}).inserted_id)
+                #if authform.name.data == '':
+                #    authform.name.data = authform.username.data
+                #session['current_user_id'] = str(mongo.db.users.insert_one({'name': authform.name.data, 'username': authform.username.data, 'password': hashlib.sha256(config.pepper.encode('UTF-8')+ authform.password.data.encode('UTF-8')).hexdigest()}).inserted_id)
+                session['current_user_id'] = str(mongo.db.users.insert_one({'username': authform.username.data, 'password': hashlib.sha256(config.pepper.encode('UTF-8')+ authform.password.data.encode('UTF-8')).hexdigest()}).inserted_id)
             session['user_available'] = True
             session['current_user'] = authform.username.data
             return True
@@ -74,7 +83,7 @@ def table_filling(daysandhoursform):
     if request.method == 'POST':
         try:
             #insert username and his choosen dates to the db
-            mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users.'+session['current_user_id']:{'name':session['current_user'],'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
+            mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users.'+session['current_user_id']:{'name':daysandhoursform.name.data,'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
             return 'Updated'
         except Exception as e:
             flash("Something wrong")
@@ -108,8 +117,13 @@ def create_step_1():
         session['user_available'] = False
     if session['user_available'] != True:
         authform = AuthForm(request.form)
-        if Auth(authform):
-            return redirect(url_for('create_step_2'))
+        Auth_result = Auth(authform)
+        if Auth_result:
+            if Auth_result!='wrong password':
+                return redirect(url_for('create_step_2'))
+            else:
+                flash("Username exists and password is wrong")
+                return render_template('create_step_1.html', authform=authform)
         else:
             return render_template('create_step_1.html', authform=authform)
     else:
@@ -243,6 +257,9 @@ def meetings(id):
 def meeting_login():
     authform = AuthForm(request.form)
     resp = Auth(authform)
+    if resp=='wrong password':
+        flash("Username exists and password is wrong")
+        return render_template('meeting_login.html', authform=authform)
     if resp=='exists' or (session.get('user_available') and not resp):
         user = mongo.db.meetings.find_one({'meeting_id_hash': session['meeting_id_hash']})
         print(user)

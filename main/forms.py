@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 from wtforms.fields.html5 import DateField, TimeField
 
 class AuthForm(Form):
-    name = TextField('Displayed name', validators = [DataRequired()])
+    #name = TextField('Displayed name', validators = [DataRequired()])
     username = TextField('Username', validators = [DataRequired()])
     password = PasswordField('Password', validators = [DataRequired()])
     submit = SubmitField('Authenticate')
@@ -17,5 +17,6 @@ class MeetingForm(Form):
     submit = SubmitField('Submit')
 
 class DaysAndHoursForm(Form):
+    name = TextField('Displayed name', validators = [DataRequired()])
     selecteddaysandhours = HiddenField()
     submit = SubmitField('Submit')

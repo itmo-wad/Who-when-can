@@ -16,6 +16,9 @@
 .span_1_of_4 {
 	width: 23.8%; 
 }
+.span_1_of_4_signin {
+	width: 100%; 
+}
 
 /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
 

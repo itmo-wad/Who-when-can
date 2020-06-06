@@ -1,19 +1,16 @@
 <div class="auth-form">    
     <form class="form-AuthForm" method="POST">
         <div class="row">
-            <div class="col span_1_of_4 name">
-                <h4>Enter your name</h4>
-                {{ authform.name(class_="authform-name") }}
-            </div>
-            <div class="col span_1_of_4 username">
-                <h4>Enter your username</h4>
+         
+            <div class="col_signin .span_1_of_4_signin username">
+                <h4>Enter your username (for internal usage)</h4>
                 {{ authform.username(class_="authform-username") }}
             </div>
-            <div class="col span_1_of_4 password">
+            <div class="col_signin .span_1_of_4_signin password">
                 <h4>Enter your password</h4>
                 {{ authform.password(class_="authform-password") }}
             </div>
-            <div class="col span_1_of_4 submit">
+            <div class="col_signin .span_1_of_4_signin submit">
                 <h4><br></h4>
                 {{ authform.csrf_token }}
                 {{ authform.submit(class_="authform-submit") }}
