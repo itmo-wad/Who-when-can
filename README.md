@@ -29,9 +29,9 @@ TODO list:
 - [x] Restore some of them and write everything again
 - [x] Create draft frontend
 - [x] Work hard
-- [ ] Make production version
+- [x] Make production version
 - [ ] Release
-- [ ] Make a presentation for WAD course
+- [x] Make a presentation for WAD course
 - [ ] Enjoy your life
 
 
