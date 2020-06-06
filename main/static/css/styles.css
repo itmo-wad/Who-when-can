@@ -5,11 +5,23 @@
     src: local('Lato Light'), local('Lato-Light'), url(font.ttf) format('truetype');
   }
   
-
 *{
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+}
+
+
+
+h2, .far, .fas {
+    margin: 10px 0 0 0;
+}
+
+.description{    
+    left: 50%;
+    text-align: center;
+    margin:30px 0 30px 0;
+    font-weight: bold;
 }
 
 html{
@@ -401,7 +413,6 @@ ul{
 /* ---------------Meeting-created---------------- */
 /* ---------------------------------------------- */
 .meetingcreated__text{
-    font-size: 25px;
     margin-top: 30px;
     position: relative;
     text-align: center;

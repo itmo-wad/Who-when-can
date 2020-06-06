@@ -6,12 +6,12 @@
 	<body>
 	{% include 'header.html' %}
 	<div class="meetingcreated__text">		
-		<h3><i class="far fa-check-square created__logo"></i>All done</h3>
-		<br><br>
-		<h4>Send this link to all your meeting's participants:</h4>
+		<h2>All done</h2>
+		<div class='description'>
+			<p>Send this link to all your meeting's participants:</p>
+		</div>
 		<div>
 		<textarea id="meeting_link" cols="70" rows="2" wrap="hard" >https://meetingtime.best/meetings/{{id}}</textarea>
-		<!--<textarea id="meeting_link" cols="70" rows="2" wrap="hard" >http://167.172.45.32:31340/meetings/{{id}}</textarea>-->
 		</div>
 		<div>
 		<button class="btn__small btn__blue inline" onclick="copy_text()">Copy text</button>
