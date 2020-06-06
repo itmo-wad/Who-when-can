@@ -315,7 +315,7 @@ def finish():
                     helper[day][hr]['votes']/= total
 
             print(helper)
-            return render_template('success.html', meet=meet, helper=helper) ## change endpoint to: redirect to the list of the meetings (?)
+            return render_template('success.html', meet=meet, helper=helper) 
         else:
             flash("Sorry, there is no meeting you trying to access")
     return render_template('error.html')  
