@@ -14,13 +14,16 @@
         </h3>
     </div>
     <div class="header__user">
-        <h3 class="header__user--text">		
+        	
             {% if session['current_user'] is defined %}
-            Hello:<br> {{session['current_user']}}<br>
+            <h3 class="header__user--text">	
+            Hello, <br> {{session['current_user']}}<br>
+        </h3>
+            <a href="/logout" class="header__user--logout btn__big btn__white">Log out</a>            
             {% endif %}	
             
-        </h3>
-        <a href="/logout" class="header__user--logout btn__big btn__white">Log out</a>
+       
+       
     </div>
     <div class="header__notifications">
         {% with messages = get_flashed_messages() %}

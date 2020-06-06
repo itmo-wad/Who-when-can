@@ -284,7 +284,10 @@ def time_picking():
         if result == 'Updated':
             return redirect(url_for('finish'))
         elif result != False:
-            return render_template('time_picking.html', table=result, daysandhoursform=daysandhoursform)
+            tmp = mongo.db.meetings.find_one({'_id':ObjectId(session['meeting_id'])})
+            meeting_name = tmp['name']
+            meeting_info = tmp['info']
+            return render_template('time_picking.html', table=result, daysandhoursform=daysandhoursform, meeting_name=meeting_name,meeting_info=meeting_info)
     return redirect(url_for('index'))
 
 
