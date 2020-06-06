@@ -74,7 +74,7 @@ def table_filling(daysandhoursform):
     if request.method == 'POST':
         try:
             #insert username and his choosen dates to the db
-            mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users.'+session['current_user_id']:{'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
+            mongo.db.meetings.update_one({'_id': ObjectId(session['meeting_id'])}, {"$set":{'users.'+session['current_user_id']:{'name':session['current_user'],'selected_dates':json.loads(daysandhoursform.selecteddaysandhours.data)}}})
             return 'Updated'
         except Exception as e:
             flash("Something wrong")
@@ -167,8 +167,48 @@ def create_step_3():
 @app.route('/meeting_created/<id>')
 def meeting_created(id):        	
     if session.get('user_available'):
-        if mongo.db.meetings.find_one({'meeting_id_hash': id}):
-            return render_template('meeting_created.html', id=id) ## change endpoint to: redirect to the list of the meetings (?)
+        meet = mongo.db.meetings.find_one({'meeting_id_hash': id})
+        if meet:
+            # add some bulsh*t magic
+            total = 0
+            helper = {}
+            for usr in meet['users']:
+                for day in meet['users'][usr]['selected_dates']['day']:
+                    total+=len(meet['users'][usr]['selected_dates']['day'][day]['hours'])
+                    for hr in meet['users'][usr]['selected_dates']['day'][day]['hours']:
+                        for dd in meet['available_dates']['days']:
+                            if (dd['day']==day):
+                                for hh in dd['hours']:
+                                    if dd['hours'][hh]==hr:
+                                        if (helper.get(day)):
+                                            if (helper[day].get(hr)):
+                                                helper[day][hr]['users'].append(meet['users'][usr]['name'])
+                                                helper[day][hr]['votes']+=1
+                                            else:
+                                                helper[day][hr] = {'users': [meet['users'][usr]['name']], 'votes': 1}
+                                        else:
+                                            helper[day] = {hr: {'users': [meet['users'][usr]['name']], 'votes': 1}}
+                                        break
+                                break
+
+            print(total, 'eto total')
+            print(helper)
+
+            for day in meet['available_dates']['days']:
+                for hour in day['hours']:
+                    tmp=day['hours'][hour]
+                    day['hours'][hour] = day['hours'][hour] + ' - ' + ':'.join([str(elem) for elem in (str(datetime.datetime.strptime(day['hours'][hour], '%H:%M') + datetime.timedelta(hours=int(meet['duration'].split(':')[0]), minutes=int(meet['duration'].split(':')[1]))).split()[1].split(':')[:-1])]) # oneliner to make interval from start and duration
+                    if (helper.get(day['day'])):
+                        if (helper[day['day']].get(tmp)):
+                            helper[day['day']][day['hours'][hour]] = helper[day['day']][tmp]
+                            del helper[day['day']][tmp]
+
+            for day in helper:
+                for hr in helper[day]:
+                    helper[day][hr]['votes']/= total
+
+            print(helper)
+            return render_template('meeting_created.html', id=id, meet=meet, helper=helper) ## change endpoint to: redirect to the list of the meetings (?)
         else:
             flash("Sorry, there is no meeting you trying to access")
     return redirect(url_for('create_step_1'))
@@ -233,10 +273,49 @@ def time_picking():
 
 @app.route('/finish')
 def finish():
-    try:
-        if session['user_available']:
-            return render_template('success.html') ## change endpoint to: redirect to the list of the meetings (?)
-    except Exception as e:
+    if session.get('user_available'):
+        meet = mongo.db.meetings.find_one({'meeting_id_hash': session['meeting_id_hash']})
+        if meet:
+            # add some bulsh*t magic
+            total = 0
+            helper = {}
+            for usr in meet['users']:
+                for day in meet['users'][usr]['selected_dates']['day']:
+                    total+=len(meet['users'][usr]['selected_dates']['day'][day]['hours'])
+                    for hr in meet['users'][usr]['selected_dates']['day'][day]['hours']:
+                        for dd in meet['available_dates']['days']:
+                            if (dd['day']==day):
+                                for hh in dd['hours']:
+                                    if dd['hours'][hh]==hr:
+                                        if (helper.get(day)):
+                                            if (helper[day].get(hr)):
+                                                helper[day][hr]['users'].append(meet['users'][usr]['name'])
+                                                helper[day][hr]['votes']+=1
+                                            else:
+                                                helper[day][hr] = {'users': [meet['users'][usr]['name']], 'votes': 1}
+                                        else:
+                                            helper[day] = {hr: {'users': [meet['users'][usr]['name']], 'votes': 1}}
+                                        break
+                                break
+
+            print(total, 'eto total')
+            print(helper)
+
+            for day in meet['available_dates']['days']:
+                for hour in day['hours']:
+                    tmp=day['hours'][hour]
+                    day['hours'][hour] = day['hours'][hour] + ' - ' + ':'.join([str(elem) for elem in (str(datetime.datetime.strptime(day['hours'][hour], '%H:%M') + datetime.timedelta(hours=int(meet['duration'].split(':')[0]), minutes=int(meet['duration'].split(':')[1]))).split()[1].split(':')[:-1])]) # oneliner to make interval from start and duration
+                    if (helper.get(day['day'])):
+                        if (helper[day['day']].get(tmp)):
+                            helper[day['day']][day['hours'][hour]] = helper[day['day']][tmp]
+                            del helper[day['day']][tmp]
+
+            for day in helper:
+                for hr in helper[day]:
+                    helper[day][hr]['votes']/= total
+
+            print(helper)
+            return render_template('success.html', meet=meet, helper=helper) ## change endpoint to: redirect to the list of the meetings (?)
+        else:
             flash("Sorry, there is no meeting you trying to access")
-            print(e) 
-    return render_template('error.html')    
+    return render_template('error.html')  

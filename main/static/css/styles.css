@@ -472,3 +472,85 @@ table table table td{
     margin-top: 30px;
     text-align: center;
 }
+
+
+.final_result tr:nth-child(even) {
+    background-color: rgba(22, 77, 130, 0.59);
+}
+
+.final_result tr:nth-child(odd) {
+    background-color: rgba(4, 70, 133, 0.3);
+}
+
+.final_result table {
+    width: 100%;
+}
+
+.final_result {
+    border-collapse: collapse;
+}
+
+.final_result>tbody>tr>td, .final_result>tbody>tr>th {
+    border: 1px solid white;
+}
+
+.final_result .result__table td {
+    border-right: 1px solid white;
+}
+
+.res-clr-0 {
+    background-color: #ff8700;
+}
+.res-clr-1 {
+    background-color: #ff9a2a;
+}
+.res-clr-2 {
+    background-color: #ffa54b;
+}
+.res-clr-3 {
+    background-color: #ffb26c;
+}
+.res-clr-4 {
+    background-color: #ffca99;
+}
+.res-clr-5 {
+    background-color: #fcd8b4;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  font-weight: bold;
+  transition: opacity 0.7s;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 120%;
+  left: 50%;
+  margin-left: -100px;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}

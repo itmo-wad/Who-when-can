@@ -18,7 +18,63 @@
 		<span id="copied_text" class="hidden" style="background-color:lightgray;font-size:1rem;">Copied</span>
 		</div>
 	</div>
-	
+	<table class="result__table final_result">
+		<tbody>
+			<tr>
+				<th colspan="2" style="background-color: white; font-size: 20px;">Results</th>
+			</tr>
+			<tr style="border-right: 2px solid white;">
+				<th>Day</th>
+				<th>Hours</th>
+			</tr>
+			{% for dd in meet['available_dates']['days'] %}
+			<tr>
+				<td>{{ dd['day'] }}</td>
+				<td>
+				<table class="result__table">
+				<tbody>
+					<tr>
+						{% for hh in dd['hours'] %}
+						<td class="
+						{% if helper.get(dd['day']) %}
+						{% if helper.get(dd['day']).get(dd['hours'][hh]) %}
+						tooltip
+						{% set votes = helper[dd['day']][dd['hours'][hh]]['votes'] %}
+						{% if votes == 1 %}
+						res-clr-0
+						{% elif votes >= 0.8 %}
+						res-clr-1
+						{% elif votes >= 0.6 %}
+						res-clr-2
+						{% elif votes >= 0.4 %}
+						res-clr-3
+						{% elif votes >= 0.2 %}
+						res-clr-4
+						{% elif votes > 0 %}
+						res-clr-5
+						{% endif %}
+						{% endif %}
+						{% endif %}
+						">
+						{% if helper.get(dd['day']) %}
+						{% if helper.get(dd['day']).get(dd['hours'][hh]) %}
+						<span class="tooltiptext">
+						{% for user in helper[dd['day']][dd['hours'][hh]]['users'] %}
+						{{ user }} <br>
+						{% endfor %}
+						</span>
+						{% endif %}
+						{% endif %}
+						{{ dd['hours'][hh] }}</td>
+						{% endfor %}
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
 	
 	{% include 'footer.html' %}
